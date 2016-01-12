@@ -80,6 +80,9 @@ app.use(function(err, req, res, next) {
   });
 });
 
-app.listen(process.env['PORT'] || 5000)
+var PORT = process.env['PORT'] || 9000;
+app.listen(PORT, function(){
+  console.log('erans-directory: Bound succesfully to port', PORT);
+})
 
 module.exports = app;
