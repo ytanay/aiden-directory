@@ -132,7 +132,8 @@
       getInitialState: function(){
         return {
           requests: [],
-          carries: []
+          carries: [],
+          errors: []
         }
       },
 
@@ -187,6 +188,11 @@
           this.forceUpdate();
         });
 
+        socket.on('error', (data) => {
+          this.state.errors.push(data);
+          this.forceUpdate();
+        })
+
         window.networkGraph = new vis.Network(this.refs.networkGraph, {
           nodes: allNodes,
           edges: edgeView
@@ -201,13 +207,22 @@
             <div className="row">
               <div className="col-md-6"><h2 className="sub-header">Realtime Network State Graph</h2>
               <div ref="networkGraph"/></div>
-              <Table className="col-md-6" name={<span>Carries <small>(last 10)</small></span>} data={this.state.requests} limit={10} colorize layout={{
+              <Table className="col-md-6" name={<span>Requests <small>(last 10)</small></span>} data={this.state.requests} limit={10} colorize layout={{
                   '#': 'id',
                   'Target': 'target',
                   'Next': 'next',
                   'Current': 'source',
                   'Hops': 'hops'
                 }} />
+            </div>
+            <div className="row">
+              <Table className="col-md-12" name={<span>Errors <small>(last 5)</small></span>} data={this.state.errors} limit={5} rowStyle="danger" layout={{
+                    '#': 'id',
+                    'Target': 'target',
+                    'At': 'source',
+                    'Error': 'error',
+                    'Details': 'details'
+                  }} />
             </div>
             <div className="row">
               <Table className="col-md-12" name={<span>Carries <small>(last 20)</small></span>} data={this.state.carries} limit={20} colorize layout={{

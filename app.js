@@ -39,7 +39,8 @@ app.post('/join', function(req, res){
   var nodeState = {
     key: req.body.publicKey,
     requests: 0,
-    carries: 0
+    carries: 0,
+    errors: 0
   }
 
   nodes[address] = nodeState;
