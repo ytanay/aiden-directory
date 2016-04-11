@@ -124,7 +124,7 @@
                   })}</tr>, this.props.accordion && <tr>
                 <td colSpan={_.keys(this.props.layout).length} className="hiddenRow">
                     <div className="accordion-body collapse packageDetails1" id={'extra-content-' + row.id}>
-                      <code>{newId(_.random(10, 5000))}</code>
+                      Route Selection: <kbd>LATENCY_BEST_OF:5</kbd>, Mean time-to-pipe: <kbd>{_.random(1, 650)}ms</kbd><br/>Raw content: <code>{newId(_.random(10, 5000))}</code>
                     </div>
                 </td>
             </tr>]
