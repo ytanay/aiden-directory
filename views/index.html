@@ -4,12 +4,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>ERANS - Main</title>
 
-    <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.6/darkly/bootstrap.min.css" rel="stylesheet" integrity="sha384-kVo/Eh0sv7ZdiwZK32nRsp1FrDT3sLRLx3zVpSSTI9UdO5H02LJNLBg5F1gwvKg0" crossorigin="anonymous">
+    <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.6/simplex/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.15.0/vis.min.css" rel="stylesheet">
     <style>
       /* Move down content because we have a fixed navbar that is 50px tall */
       body {
-      padding-top: 50px;
+      padding: 50px;
       }
 
 
@@ -46,6 +46,10 @@
       }
       .main .page-header {
       margin-top: 0;
+      }
+
+      table.colorized {
+        color: white !important;
       }
 
     </style>
@@ -104,7 +108,7 @@
         return <div className={this.props.className}>
           <h2 className="sub-header">{this.props.name}</h2>
           <div className="table-responsive">
-            <table className="table table-striped" id={this.props.id}>
+            <table className={'table table-striped ' + (this.props.colorize && 'colorized')} id={this.props.id}>
               <thead>
                 <tr>
                   {_.map(this.props.layout, function(column, name){
