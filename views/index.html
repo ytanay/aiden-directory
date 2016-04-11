@@ -104,7 +104,7 @@
         return <div className={this.props.className}>
           <h2 className="sub-header">{this.props.name}</h2>
           <div className="table-responsive">
-            <table className="table table-striped">
+            <table className="table table-striped" id={this.props.id}>
               <thead>
                 <tr>
                   {_.map(this.props.layout, function(column, name){
@@ -114,9 +114,16 @@
               </thead>
               <tbody>
                 { _.map(this.props.limit ? _.reverse(_.takeRight(this.props.data, this.props.limit)) : this.props.data, (row, index) => {
-                  return <tr className={this.props.rowStyle} style={{backgroundColor: this.props.colorize && stringToColour(row.id)}} key={enumerator++}>{_.map(this.props.layout, (column) =>{
+                  var attrs = this.props.accordion ? makeAccordion(row.id, this.props) : {}
+                  return [<tr {...attrs} className={this.props.rowStyle} style={{backgroundColor: this.props.colorize && stringToColour(row.id)}} key={enumerator++}>{_.map(this.props.layout, (column) =>{
                     return <td key={column}>{this.format(row, column, index, enumerator)}</td>
-                  })}</tr>
+                  })}</tr>, this.props.accordion && <tr>
+                <td colSpan={_.keys(this.props.layout).length} className="hiddenRow">
+                    <div className="accordion-body collapse packageDetails1" id={'extra-content-' + row.id}>
+                      <code>{newId(_.random(10, 5000))}</code>
+                    </div>
+                </td>
+            </tr>]
                 })}
               </tbody>
             </table>
@@ -126,6 +133,14 @@
       }
 
     });
+
+    function makeAccordion(id, props){
+      return {
+        'data-toggle': 'collapse',
+        'data-parent': '#' + props.id,
+        'data-target': '#extra-content-' + id
+      }
+    }
 
     var App = React.createClass({
 
@@ -207,13 +222,13 @@
             <div className="row">
               <div className="col-md-6"><h2 className="sub-header">Realtime Network State Graph</h2>
               <div ref="networkGraph"/></div>
-              <Table className="col-md-6" name={<span>Requests <small>(last 10)</small></span>} data={this.state.requests} limit={10} colorize layout={{
+              <Table className="col-md-6" id="requests" name={<span>Requests <small>(last 10)</small></span>} data={this.state.requests} limit={10} colorize layout={{
                   '#': 'id',
                   'Target': 'target',
                   'Next': 'next',
                   'Current': 'source',
                   'Hops': 'hops'
-                }} />
+                }} accordion='data' rowStyle='accordion-toggle' />
             </div>
             <div className="row">
               <Table className="col-md-12" name={<span>Errors <small>(last 5)</small></span>} data={this.state.errors} limit={5} rowStyle="danger" layout={{
@@ -294,6 +309,18 @@
         <App />,
         document.getElementById('app')
       );
+
+      var BASE64URICHARS = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz-_'.split('');
+
+  var newId = function(len, radix) {
+   var chars = BASE64URICHARS, newId = [], i=0;
+   radix = radix || chars.length;
+   len = len || 22;
+
+   for (i = 0; i < len; i++) newId[i] = chars[0 | Math.random()*radix];
+
+   return newId.join('');
+ };
 
     </script>
   </body>
