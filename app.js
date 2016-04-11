@@ -28,7 +28,7 @@ app.post('/join', function(req, res){
   if(!req.body.port)
     throw 'Missing port'
 
-  var address = '[' + req.ip + ']:' + req.body.port;
+  var address = '[' + req.body.ip + ']:' + req.body.port;
   console.log('Welcoming new node', address, req.body);
 
   res.json({
