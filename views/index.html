@@ -94,6 +94,17 @@
     window.allNodes = new vis.DataSet();
     window.allEdges = new vis.DataSet();
 
+    var ROUTE_SELECTION = [
+      'LATENCY_BEST_OF_3',
+      'LATENCY_BEST_OF_4',
+      'LATENCY_BEST_OF_5',
+      'LATENCY_BEST_OF_6',
+      'GEO_NEAR_MIN',
+      'GEO_NEXT_HOP',
+      'LEAST_WORK_FACTORED',
+      'LEAST_CARRIED_FACTORED'
+    ];
+
     var Table = React.createClass({
       format: function(row, column, index, enumerator){
           if(column === 'INDEX')
@@ -124,7 +135,7 @@
                   })}</tr>, this.props.accordion && <tr>
                 <td colSpan={_.keys(this.props.layout).length} className="hiddenRow">
                     <div className="accordion-body collapse packageDetails1" id={'extra-content-' + row.id}>
-                      Route Selection: <kbd>LATENCY_BEST_OF:5</kbd>, Mean time-to-pipe: <kbd>{_.random(1, 650)}ms</kbd><br/>Raw content: <code>{newId(_.random(10, 5000))}</code>
+                      Route Selection: <kbd>{_.sample(ROUTE_SELECTION)}</kbd>, Mean time-to-pipe: <kbd>{_.random(1, 650)}ms</kbd><br/>Raw content: <code>{newId(_.random(10, 5000))}</code>
                     </div>
                 </td>
             </tr>]
