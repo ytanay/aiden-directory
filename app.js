@@ -8,7 +8,9 @@ var http = require('http').Server(app);
 var io = require('socket.io')(http);
 
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({
+  extended: false
+}));
 
 app.get('/', function(req, res){
   return res.sendFile(__dirname + '/views/index.html');
@@ -21,7 +23,9 @@ app.get('/nodes', function(req, res){
 app.post('/event/:name', function(req, res){
   io.emit(req.params.name, req.body);
   nodes[req.body.source][req.body.increment]++;
-  return res.send();
+  return res.json({
+    success: true
+  });
 });
 
 app.post('/join', function(req, res){
@@ -57,6 +61,13 @@ app.get('/list', function(req, res){
     nodes: nodes
   })
 });
+
+app.get('/restart', function(req, res){
+  res.json({
+    success: true
+  });
+  process.exit(0);
+})
 
 app['delete']('/node/:address', function(req, res){
   console.log('Removing node', req.params.address)
