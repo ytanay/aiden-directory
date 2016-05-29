@@ -111,7 +111,10 @@
             return enumerator;
           if(column === 'KEY')
             return index;
+          if(column === 'VALUE')
+            return row;
           return row[column];
+
       },
 
       render: function(){
@@ -168,9 +171,9 @@
       },
 
       componentDidMount: function(){
-        $.getJSON('/nodes', (list) => {
-          this.setState({nodes: list});
-          allNodes.add(_.map(list, function(node, address){
+        $.getJSON('/nodes', (response) => {
+          this.setState({nodes: response.nodes, secondaries: response.secondaries});
+          allNodes.add(_.map(response.nodes, function(node, address){
             node.id = node.label = address;
             node.color = stringToColour('' + Math.random());
             node.value = node.carries;
@@ -270,6 +273,14 @@
                   'Public key': 'key',
                   'Requests': 'requests',
                   'Carries': 'carries'
+                }}
+              />
+            </div>
+            <div className="row">
+              <Table className="col-md-12" name="Secondary Keys" data={this.state.secondaries} layout={{
+                  '#': 'INDEX',
+                  'ID': 'KEY',
+                  'Public key': 'VALUE'
                 }}
               />
             </div>
