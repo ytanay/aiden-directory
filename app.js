@@ -92,7 +92,7 @@ app.use(function(err, req, res, next) {
 
 var PORT = process.env['PORT'] || 9000;
 http.listen(PORT, function(){
-  console.log('erans-directory: Bound succesfully to port', PORT);
+  console.log('AIDEN-DIRECTORY: Bound succesfully to port', PORT);
 })
 
 module.exports = app;
