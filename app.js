@@ -1,8 +1,10 @@
 var express = require('express');
 var bodyParser = require('body-parser');
+var uuid = require('node-uuid');
 
 var app = express();
 var nodes = {};
+var secondaries = {};
 
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
@@ -33,11 +35,13 @@ app.post('/join', function(req, res){
     throw 'Missing port'
 
   var address = '[' + req.body.ip + ']:' + req.body.port;
-  console.log('Welcoming new node', address, req.body);
+  var id = uuid.v4();
+  console.log('Welcoming new node', address, id, req.body);
 
   res.json({
     self: address,
-    nodes: nodes
+    nodes: nodes,
+    id: id
   });
 
   var nodeState = {
@@ -48,6 +52,7 @@ app.post('/join', function(req, res){
   }
 
   nodes[address] = nodeState;
+  secondaries[id] = req.body.secondaryKey;
 
   io.emit('node join', {
     address: address,
