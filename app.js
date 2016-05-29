@@ -19,7 +19,10 @@ app.get('/', function(req, res){
 })
 
 app.get('/nodes', function(req, res){
-  return res.json(nodes);
+  return res.json({
+    nodes: nodes,
+    secondaries: secondaries
+  });
 })
 
 app.post('/event/:name', function(req, res){
@@ -41,6 +44,7 @@ app.post('/join', function(req, res){
   res.json({
     self: address,
     nodes: nodes,
+    secondaries: secondaries,
     id: id
   });
 
