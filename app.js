@@ -1,3 +1,5 @@
+var PORT = process.env['PORT'] || 9000;
+
 var express = require('express');
 var bodyParser = require('body-parser');
 var uuid = require('node-uuid');
@@ -63,19 +65,14 @@ app.post('/join', function(req, res){
     state: nodeState
   });
 
-})
-
-app.get('/list', function(req, res){
-  return res.json({
-    nodes: nodes
-  })
 });
 
 app.get('/restart', function(req, res){
   res.json({
     success: true
   });
-  process.exit(0);
+  nodes = {};
+  secondaries = {};
 })
 
 app['delete']('/node/:address', function(req, res){
@@ -99,9 +96,8 @@ app.use(function(err, req, res, next) {
   });
 });
 
-var PORT = process.env['PORT'] || 9000;
 http.listen(PORT, function(){
   console.log('AIDEN-DIRECTORY: Bound succesfully to port', PORT);
-})
+});
 
 module.exports = app;
